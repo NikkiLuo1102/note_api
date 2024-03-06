@@ -17,11 +17,6 @@ server_params = {
 }
 
 
-@app.route("/")
-def hello_world():
-    return "hello"
-
-
 @app.route("/retrieve_data", methods=["GET"])
 def retrieve_data():
     user_id = request.args.get("user_id")
