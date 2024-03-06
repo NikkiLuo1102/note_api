@@ -1,17 +1,18 @@
 from flask import Flask, request, jsonify
 import psycopg2 as db
 import json
-import datetime
 import os
 
 app = Flask(__name__)
+
+DB_PASSWORD = os.environ.get("DB_PASSWORD")
 
 server_params = {
     'dbname': 'nl1023',
     'host': 'db.doc.ic.ac.uk',
     'port': '5432',
     'user': 'nl1023',
-    'password': '08SJ88h7/31',
+    'password': DB_PASSWORD,
     'client_encoding': 'utf-8'
 }
 
@@ -20,12 +21,13 @@ server_params = {
 def hello_world():
     return "hello"
 
+
 @app.route('/retrieve_data', methods=['GET'])
 def retrieve_data():
     user_id = request.args.get('user_id')
     conn = db.connect(**server_params)
     cursor = conn.cursor()
-    
+
     cursor.execute("""
         SELECT *
         FROM notes
@@ -45,6 +47,7 @@ def retrieve_data():
             results.append(result)
         return json.dumps(results)
 
+
 @app.route('/create_data', methods=['GET'])
 def create_data():
     user_id = request.args.get('user_id')
@@ -59,8 +62,9 @@ def create_data():
     """, [user_id, color, content, time])
     conn.commit()
     conn.close()
-    
+
     return "Data created successfully."
+
 
 @app.route('/update_data', methods=['GET'])
 def update_data():
@@ -69,14 +73,14 @@ def update_data():
     time = request.args.get('time')
     color = request.args.get('color')
     content = request.args.get('content')
-    
+
     conn = db.connect(**server_params)
     cursor = conn.cursor()
 
     cursor.execute("""
         DELETE FROM notes WHERE note_id=%s
     """, [note_id])
-    
+
     cursor.execute("""
         INSERT INTO notes (user_id, color, content, time)
         VALUES (%s, %s, %s, %s)
@@ -85,6 +89,7 @@ def update_data():
     conn.close()
 
     return "Data updated successfully."
+
 
 @app.route('/delete_data', methods=['GET'])
 def delete_data():
@@ -99,6 +104,7 @@ def delete_data():
     conn.close()
 
     return "Data deleted successfully."
+
 
 if __name__ == '__main__':
     app.run(debug=True)
