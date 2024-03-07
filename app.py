@@ -13,7 +13,7 @@ server_params = {
     "host": "db.doc.ic.ac.uk",
     "port": "5432",
     "user": "nl1023",
-    "password": DB_PASSWORD,
+    "password": "08SJ88h7/31",
     "client_encoding": "utf-8",
 }
 
