@@ -75,7 +75,7 @@ def create_note():
             conn.commit()
 
         return jsonify({"message": "Note created successfully"}), 201
-    
+
     except psycopg2.Error as e:
         logging.error(f"Database error: {e.pgcode}: {e.pgerror}")
         return jsonify({"error": "Failed to create note due to database error"}), 500
