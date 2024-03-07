@@ -25,7 +25,7 @@ def get_db_connection():
 
 @app.route("/retrieve_notes", methods=["GET"])
 def retrieve_notes():
-    user_id = request.args.get("user_id")
+    user_id = request.args.get("username")
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
             cursor.execute("SELECT * FROM notes WHERE user_id = %s", (user_id,))
