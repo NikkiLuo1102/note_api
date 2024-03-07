@@ -25,10 +25,10 @@ def get_db_connection():
 
 @app.route("/retrieve_notes", methods=["GET"])
 def retrieve_notes():
-    user_id = request.args.get("username")
+    username = request.args.get("username")
     with get_db_connection() as conn:
         with conn.cursor() as cursor:
-            cursor.execute("SELECT * FROM notes WHERE user_id = %s", (user_id,))
+            cursor.execute("SELECT * FROM notes WHERE user_id = %s", (username,))
             notes = cursor.fetchall()
             columns = [desc[0] for desc in cursor.description]
             result = [dict(zip(columns, note)) for note in notes]
