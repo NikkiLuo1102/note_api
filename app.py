@@ -6,7 +6,9 @@ import logging
 app = Flask(__name__)
 
 logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s", filename='app.log'
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    filename="app.log",
 )
 
 # Environment variable for database password
