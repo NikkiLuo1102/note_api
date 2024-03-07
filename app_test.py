@@ -12,13 +12,14 @@ def client():
 def test_create_delete_note(client):
     # 首先创建一个笔记
     create_data = {
-        "user_id": "deletetest",
-        "color": "Green",
+        "username": "deletetest",
+        "color": "Red",
         "content": "test for delete",
-        "time": "2024-03-07T21:41:06"
+        "time": datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
     }
     response = client.post("/create_note", json=create_data)
     assert response.status_code == 201
+    assert response.json == {"message": "Note created successfully"}
 
     # 获取新创建的笔记的 ID
     response = client.get("/retrieve_notes?username=deletetest")
