@@ -6,7 +6,7 @@ import logging
 app = Flask(__name__)
 
 logging.basicConfig(
-    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
+    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s", filename='app.log'
 )
 
 # Environment variable for database password
@@ -62,10 +62,10 @@ def create_note():
         if not all(field in data for field in required_fields):
             return jsonify({"error": "Missing required data"}), 400
 
-        user_id = data["username"]
-        color = data["color"]
-        content = data["content"]
-        time = data["time"]
+        user_id = data.get("username")
+        color = data.get("color")
+        content = data.get("content")
+        time = data.get("time")
 
         with get_db_connection() as conn, conn.cursor() as cursor:
             cursor.execute(
