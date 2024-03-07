@@ -43,7 +43,7 @@ jobs:
   #       run: pytest
 
   build_to_ghcr:
-    needs: unit-tests # build only runs if test is successful
+    # needs: unit-tests # build only runs if test is successful
     runs-on: ubuntu-latest
 
     steps:
