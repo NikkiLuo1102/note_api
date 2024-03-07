@@ -1,8 +1,13 @@
 from flask import Flask, request, jsonify
 import psycopg2
 import os
+import logging
 
 app = Flask(__name__)
+
+logging.basicConfig(
+    level=logging.DEBUG, format="%(asctime)s - %(levelname)s - %(message)s"
+)
 
 # Environment variable for database password
 DB_PASSWORD = os.environ.get("DB_PASSWORD")
@@ -50,25 +55,35 @@ def retrieve_notes():
 
 @app.route("/create_note", methods=["POST"])
 def create_note():
-    data = request.get_json()
-
-    # Basic validation (consider more thorough checks based on your requirements)
-    required_fields = ["username", "color", "content", "time"]
-    if not all(field in data for field in required_fields):
-        return jsonify({"error": "Missing required data"}), 400
-
     try:
-        with get_db_connection() as conn:
-            with conn.cursor() as cursor:
-                cursor.execute(
-                    "INSERT INTO notes (user_id, color, content, time) VALUES (%s, %s, %s, %s)",
-                    (data["username"], data["color"], data["content"], data["time"]),
-                )
-                conn.commit()
+        data = request.get_json()
+
+        required_fields = ["username", "color", "content", "time"]
+        if not all(field in data for field in required_fields):
+            return jsonify({"error": "Missing required data"}), 400
+
+        user_id = data["username"]
+        color = data["color"]
+        content = data["content"]
+        time = data["time"]
+
+        with get_db_connection() as conn, conn.cursor() as cursor:
+            cursor.execute(
+                "INSERT INTO notes (user_id, color, content, time) VALUES (%s, %s, %s, %s)",
+                (user_id, color, content, time),
+            )
+            conn.commit()
+
         return jsonify({"message": "Note created successfully"}), 201
     except psycopg2.Error as e:
-        print(f"Database error: {e}")  # For debugging, consider using proper logging
-        return jsonify({"error": "Failed to create note"}), 500
+        logging.error(f"Database error: {e.pgcode}: {e.pgerror}")
+        return jsonify({"error": "Failed to create note due to database error"}), 500
+    except Exception as e:
+        logging.error(f"Unexpected error: {e}")
+        return (
+            jsonify({"error": "Failed to create note due to an unexpected error"}),
+            500,
+        )
 
 
 @app.route("/update_note", methods=["POST"])
