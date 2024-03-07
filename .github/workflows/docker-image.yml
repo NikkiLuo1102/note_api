@@ -40,7 +40,7 @@ jobs:
              pip install pytest
 
       - name: Run pytest
-        run: pytest api/
+        run: pytest
 
   build_to_ghcr:
     needs: unit-tests # build only runs if test is successful
