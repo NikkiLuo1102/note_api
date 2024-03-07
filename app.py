@@ -17,6 +17,7 @@ server_params = {
     "client_encoding": "utf-8",
 }
 
+
 # Establish database connection
 def get_db_connection():
     return psycopg2.connect(**server_params)
@@ -41,7 +42,7 @@ def create_note():
         with conn.cursor() as cursor:
             cursor.execute(
                 "INSERT INTO notes (user_id, color, content, time) VALUES (%s, %s, %s, %s)",
-                (data["user_id"], data["color"], data["content"], data["time"])
+                (data["user_id"], data["color"], data["content"], data["time"]),
             )
             conn.commit()
     return jsonify({"message": "Note created successfully"}), 201
@@ -54,7 +55,7 @@ def update_note():
         with conn.cursor() as cursor:
             cursor.execute(
                 "UPDATE notes SET color = %s, content = %s, time = %s WHERE note_id = %s",
-                (data["color"], data["content"], data["time"], data["note_id"])
+                (data["color"], data["content"], data["time"], data["note_id"]),
             )
             conn.commit()
     return jsonify({"message": "Note updated successfully"}), 200
