@@ -15,7 +15,7 @@ def test_create_delete_note(client):
         "username": "deletetest",
         "color": "Red",
         "content": "test for delete",
-        "time": datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+        "time": datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
     }
     response = client.post("/create_note", json=create_data)
     assert response.status_code == 201
@@ -26,9 +26,7 @@ def test_create_delete_note(client):
     note_id = response.json[0]["note_id"]
 
     # 准备请求数据
-    data = {
-        "note_id": note_id
-    }
+    data = {"note_id": note_id}
 
     # 发送 POST 请求
     response = client.post("/delete_note", json=data)
@@ -57,7 +55,7 @@ def test_update_note(client):
         "note_id": 4,
         "color": "Blue",
         "content": "test for update",
-        "time": datetime.now().strftime('%Y-%m-%dT%H:%M:%S.%fZ')
+        "time": datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
     }
 
     # 发送 POST 请求
