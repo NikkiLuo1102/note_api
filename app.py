@@ -42,7 +42,7 @@ def create_note():
         with conn.cursor() as cursor:
             cursor.execute(
                 "INSERT INTO notes (user_id, color, content, time) VALUES (%s, %s, %s, %s)",
-                (data["user_id"], data["color"], data["content"], data["time"]),
+                (data["username"], data["color"], data["content"], data["time"]),
             )
             conn.commit()
     return jsonify({"message": "Note created successfully"}), 201
