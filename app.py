@@ -18,7 +18,7 @@ server_params = {
     "host": "db.doc.ic.ac.uk",
     "port": "5432",
     "user": "nl1023",
-    "password": DB_PASSWORD,
+    "password": "08SJ88h7/31",
     "client_encoding": "utf-8",
 }
 
@@ -75,6 +75,7 @@ def create_note():
             conn.commit()
 
         return jsonify({"message": "Note created successfully"}), 201
+
     except psycopg2.Error as e:
         logging.error(f"Database error: {e.pgcode}: {e.pgerror}")
         return jsonify({"error": "Failed to create note due to database error"}), 500
